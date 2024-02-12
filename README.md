@@ -4,7 +4,9 @@ Code used to assemble and analyze Raoultella terrigena strain RT01-5M1 genome
 ## Description
 To perform an hybrid assembly, nanopore reads were basecalled with Guppy v6.5.7 in super accuracy mode, adapters trimmed with Porechop v0.2.4 and low quality reads filtered out with Filtlong v0.2.1. Filtered reads were assembled with Trycycler v0.5.4 (12) to generate a consensus long read assembly from Raven v1.8.1 (13), Shasta v0.8.0 (14) and Flye v2.9 (15), with eight subsamples per assembler. Short reads were trimmed with fastp v0.23.4 (16) and NextPolish v1.4.1 (17), ntEdit v1.3.5 (18) and Polypolish v.0.5.0 (19) were used to polish the consensus assembly.
 
-Genome assembly completion was assessed with CheckM v1.2.2 (20). Species identification was assessed using 1) 16S rRNA similarity with ??? vXXX (REF); 2) average nucleotide identity with FastANI (23); 3) mashID (https://github.com/duceppemo/mashID) combined with proGenomes v3 (24); and 4) by Genome-to-Genome Distance (25) compared to the *R. terrigena* type strain NBRC 14941 (Accession number GCA_006539725)
+Genome assembly completion was assessed with CheckM v1.2.2 (20). Species identification was assessed using 1) 16S rRNA similarity with ??? vXXX (REF); 2) average nucleotide identity with FastANI (23); 3) mashID (https://github.com/duceppemo/mashID) combined with proGenomes v3 (24); and 4) by Genome-to-Genome Distance (25) compared to the *R. terrigena* type strain NBRC 14941 (Accession number GCA_006539725).
+
+Antimicrobial resistance profile was established using ResFinder v4.1.5 (22).
 
 ## References
 12.Wick RR, Judd LM, Cerdeira LT, Hawkey J, Méric G, Vezina B, Wyres KL, Holt KE. 2021. Trycycler: consensus long-read assemblies for bacterial genomes. Genome Biol 22:266.
