@@ -6,6 +6,18 @@ To perform an hybrid assembly, nanopore reads were basecalled with Guppy v6.5.7 
 
 Genome assembly completion was assessed with CheckM v1.2.2 (20). Species identification was assessed using 1) 16S rRNA similarity with ??? vXXX (REF); 2) average nucleotide identity with FastANI (23); 3) mashID (https://github.com/duceppemo/mashID) combined with proGenomes v3 (24); and 4) by Genome-to-Genome Distance (25) compared to the *R. terrigena* type strain NBRC 14941 (Accession number GCA_006539725).
 
+
+16S rRNA Similarity determination (https://www.ezbiocloud.net/tools/contest16s)
+Lee I, Chalita M, Ha SM, Na SI, Yoon SH, Chun J. (2017). ContEst16S: an algorithm that identifies contaminated prokaryotic genomes using 16S RNA gene sequences. Int J Syst Evol Microbiol. 67(6):2053-2057.
+
+ANI (https://www.ezbiocloud.net/tools/ani):
+Yoon, S. H., Ha, S. M., Lim, J. M., Kwon, S.J. & Chun, J. (2017). A large-scale evaluation of algorithms to calculate average nucleotide identity. Antonie van Leeuwenhoek. 110:1281–1286.
+
+GGDC (https://ggdc.dsmz.de/): 
+Meier-Kolthoff, J.P., Sardà Carbasse, J., Peinado-Olarte, R.L., Göker, M. TYGS and LPSN: a database tandem for fast and reliable genome-based classification and nomenclature of prokaryotes. Nucleic Acid Res 50:D801–D807, 2022.
+
+
+
 Antimicrobial resistance profile was established using ResFinder v4.1.5 (22).
 
 ## References
