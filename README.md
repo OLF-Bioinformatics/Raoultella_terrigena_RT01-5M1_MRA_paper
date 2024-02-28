@@ -2,6 +2,8 @@
 Code used to assemble and analyze Raoultella terrigena strain RT01-5M1 genome
 
 ## Bioinformatic procedures
+All the command lines used to produce the genome assembly are located in the the script file `raoultella.sh`.
+
 ### Hybrid assembly
 Nanopore reads were basecalled with Guppy v6.5.7 in super accuracy mode, adapters trimmed with Porechop v0.2.4 and low quality reads filtered out with Filtlong v0.2.1. Filtered reads were assembled with Trycycler v0.5.4 (12) to generate a consensus long read assembly from Raven v1.8.1 (13), Shasta v0.8.0 (14) and Flye v2.9 (15), with eight subsamples per assembler. Short reads were trimmed with fastp v0.23.4 (16) and NextPolish v1.4.1 (17), ntEdit v1.3.5 (18) and Polypolish v.0.5.0 (19) were used to polish the consensus assembly.
 
