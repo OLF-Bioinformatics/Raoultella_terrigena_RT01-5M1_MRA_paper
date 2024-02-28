@@ -1,5 +1,9 @@
 #!/bin/bash
 
+# I/O
+export baseDir=/home/bioinfo/analyses/raoultella
+export fast5=/media/36tb/data/raoultella/nanopore/fast5
+
 # Performance
 export cpu=$(nproc)
 export maxProc=1
@@ -8,43 +12,55 @@ export scripts=$HOME/scripts
 export mem=$(($(grep MemTotal /proc/meminfo | awk '{print $2}')*85/100000000)) #85% of total memory in GB
 export memJava="-Xmx"$mem"g" 
 
-# Refseq masher
+# Folders
+basecalled="${baseDir}"/basecalled
+trycycler="${baseDir}"/trycycler
+polished="${baseDir}"/polished
+mashID="${baseDir}"/mashID
+annotation="${baseDir}"/annotation
+amr="${baseDir}"/amr
 
-genome='/home/bioinfo/analyses/raoultella/short_read_polish_5000/polished_illumina/BB5M1.fasta'
+[ -d "$baseDir" } || mkdir -p "$baseDir"
+[ -d "${baseDir}"/basecalled ] || mkdir -p "${baseDir}"/basecalled
+[ -d "${baseDir}"/trycycler ] || mkdir -p "${baseDir}"/trycycler
+[ -d "${baseDir}"/polished ] || mkdir -p "${baseDir}"/polished
+[ -d "${baseDir}"/mashID ] || mkdir -p "${baseDir}"/mashID
+[ -d "${annotation}"/pgap ] || mkdir -p "${annotation}"/pgap
+[ -d "${baseDir}"/amr ] || mkdir -p "${baseDir}"/amr
 
-function id_sample() {
-    sample=$(basename "$1" ".fasta")
-    refseq_masher matches\
-        --output-type "tab" \
-        -n 1 \
-        -m 1 \
-        $1 \
-        | sed -n 2p >> '/home/bioinfo/analyses/raoultella/refseq_masher/refseq_masher_ids.tsv';
-}
 
-echo -e "sample\ttop_taxonomy_name\tdistance\tpvalue\tmatching\tfull_taxonomy\ttaxonomic_species\ttaxonomic_genus\ttaxonomic_family\ttaxonomic_order\ttaxonomic_class\ttaxonomic_phylum\ttaxonomic_superkingdom\tsubspecies\tserovar\tplasmid\tbioproject\tbiosample\ttaxid\tassembly_accession\tmatch_id"     > /home/bioinfo/analyses/raoultella/refseq_masher/refseq_masher_ids.tsv
+# Basecall fast5 and pre-process fastq
+# https://github.com/duceppemo/basecall_nanopore
+conda activate nanopore
+python basecall_nanopore.py \
+    --input "$fast5" \
+    --output "$basecalled" \
+    --recursive \
+    --config dna_r9.4.1_450bps_sup.cfg \
+    --threads "$cpu" \
+    --gpu "cuda:0"
 
-conda activate refseq_masher
-id_sample "$genome" 
-conda deactivate
+# Rename fastq files to "BB5M1"
+
+# Assemble genome with trycycler
+# see https://github.com/OLF-Bioinformatics/nanopore/blob/master/run_trycycler.sh
+
+# Polish genome with short reads
+# see https://github.com/OLF-Bioinformatics/nanopore/blob/master/short_read_polish.sh
+
+genome="${polished}"/polished_illumina/BB5M1.fasta
 
 # mashID
-
 conda activate mashID
-
 python ~/prog/mashID/mashID.py \
     -d /media/36tb/db/mashID/2023-01-19_refseq_bacteria_derep_0.01.msh \
     -i "$genome" \
-    -o /home/bioinfo/analyses/raoultella/mashID \
+    -o "$mashID" \
     -p 1
 
+# Annotate assembly
 genus=Raoultella
 species=terrigena
-
-# PGAP version 2023-10-03.build7061
-annotation=/home/bioinfo/analyses/raoultella/annotation
-
-[ -d "${annotation}"/pgap ] || mkdir -p "${annotation}"/pgap
 
 function annotate_pgap()
 {
@@ -79,7 +95,7 @@ organism:
     strain: 'my_strain'
 " > "$metadata_yaml" 
 
-    # Run PGAP v2023-10-03.build7061
+    # Run PGAP
     python "${prog}"/pgap.py \
         --no-self-update \
         --report-usage-false \
@@ -97,9 +113,6 @@ organism:
 annotate_pgap "$genome" 
 
 ####  AMR
-
-amr=/home/bioinfo/analyses/raoultella/amr
-
 ### Resfinder
 conda activate resfinder
 
